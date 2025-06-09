@@ -278,10 +278,10 @@ a {
     padding-top: 40px; /* Add extra space for mobile navbar */
   }
   .App {
-    padding-top: 80px; /* ensure content is not hidden behind navbar */
+    padding-top: 60px; /* reduced from 80px */
   }
   .hero-section {
-    padding-top: 80px;
+    padding-top: 60px; /* reduced from 80px */
   }
 }
 
@@ -529,10 +529,10 @@ a {
 
 /* Center landing hero content vertically */
 .landing-hero-centered {
-  min-height: calc(100vh - 180px); /* was 100vh - 120px, now less for higher position */
+  min-height: calc(100vh - 120px); /* safer value for vertical centering */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: -40px; /* move content up by about 2cm */
+  /* margin-top: -40px;  removed to prevent content from being pushed out of view */
 }
