@@ -5,6 +5,20 @@ export default function Navbar({ navItems, onNavClick, getStartedClicked, brand,
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [messageIdx, setMessageIdx] = useState(null);
   const [logoMsg, setLogoMsg] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Track window width for mobile/desktop
+  useEffect(() => {
+    function checkMobile() {
+      if (typeof window !== 'undefined') {
+        setIsMobile(window.innerWidth <= 900);
+        if (window.innerWidth > 900) setMobileNavOpen(false);
+      }
+    }
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Close drawer when clicking outside
   useEffect(() => {
@@ -38,37 +52,41 @@ export default function Navbar({ navItems, onNavClick, getStartedClicked, brand,
           </div>
         )}
       </div>
-      {/* Hamburger button for mobile */}
-      <button className="hamburger-btn" onClick={() => setMobileNavOpen(v => !v)} aria-label="Open navigation">
-        <span></span><span></span><span></span>
-      </button>
+      {/* Hamburger button and drawer only on mobile */}
+      {isMobile && (
+        <>
+          <button className="hamburger-btn" onClick={() => setMobileNavOpen(v => !v)} aria-label="Open navigation">
+            <span></span><span></span><span></span>
+          </button>
+          <div className={`mobile-nav-drawer${mobileNavOpen ? ' open' : ''}`} style={{ width: '180px', left: mobileNavOpen ? 0 : '-200px' }}>
+            <button className="close-drawer-btn" onClick={() => setMobileNavOpen(false)} aria-label="Close navigation">×</button>
+            <ul>
+              {navItems.map((item, idx) => (
+                <li key={item.id} style={{ position: 'relative' }}>
+                  <button onClick={() => handleNavClick(idx, item.id)}>{item.label}</button>
+                  {messageIdx === idx && !getStartedClicked && (
+                    <div className="landing-nav-msg" style={{ position: 'absolute', left: '110%', top: '50%', transform: 'translateY(-50%)', whiteSpace: 'nowrap' }}>Click on Get Started to use this feature.</div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+          {mobileNavOpen && <div className="mobile-nav-overlay"></div>}
+        </>
+      )}
       {/* Desktop nav */}
-      <ul className="navbar-links">
-        {navItems.map((item, idx) => (
-          <li key={item.id} style={{ position: 'relative' }}>
-            <button onClick={() => handleNavClick(idx, item.id)}>{item.label}</button>
-            {messageIdx === idx && !getStartedClicked && (
-              <div className="landing-nav-msg">Click on Get Started to use this feature.</div>
-            )}
-          </li>
-        ))}
-      </ul>
-      {/* Mobile nav drawer */}
-      <div className={`mobile-nav-drawer${mobileNavOpen ? ' open' : ''}`} style={{ width: '180px', left: mobileNavOpen ? 0 : '-200px' }}>
-        <button className="close-drawer-btn" onClick={() => setMobileNavOpen(false)} aria-label="Close navigation">×</button>
-        <ul>
+      {!isMobile && (
+        <ul className="navbar-links">
           {navItems.map((item, idx) => (
-            <li key={item.id}>
+            <li key={item.id} style={{ position: 'relative' }}>
               <button onClick={() => handleNavClick(idx, item.id)}>{item.label}</button>
               {messageIdx === idx && !getStartedClicked && (
-                <div className="landing-nav-msg" style={{ position: 'static', marginTop: 4, left: 'unset', top: 'unset', transform: 'none' }}>Click on Get Started to use this feature.</div>
+                <div className="landing-nav-msg">Click on Get Started to use this feature.</div>
               )}
             </li>
           ))}
         </ul>
-      </div>
-      {/* Overlay for mobile nav */}
-      {mobileNavOpen && <div className="mobile-nav-overlay"></div>}
+      )}
     </nav>
   );
 } 
