@@ -33,6 +33,19 @@ function scrollToSection(id) {
 function LandingPage({ onGetStarted }) {
   const [messageIdx, setMessageIdx] = useState(null);
   const [logoMsg, setLogoMsg] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  // Close drawer when clicking outside
+  React.useEffect(() => {
+    if (!mobileNavOpen) return;
+    function handleClick(e) {
+      if (e.target.closest('.mobile-nav-drawer') || e.target.closest('.hamburger-btn')) return;
+      setMobileNavOpen(false);
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [mobileNavOpen]);
+
   return (
     <div className="landing-bg">
       <nav className="navbar">
@@ -45,6 +58,11 @@ function LandingPage({ onGetStarted }) {
             </div>
           )}
         </div>
+        {/* Hamburger button for mobile */}
+        <button className="hamburger-btn" onClick={() => setMobileNavOpen(v => !v)} aria-label="Open navigation">
+          <span></span><span></span><span></span>
+        </button>
+        {/* Desktop nav */}
         <ul className="navbar-links">
           {NAV_ITEMS.map((item, idx) => (
             <li key={item.id} style={{ position: 'relative' }}>
@@ -55,6 +73,19 @@ function LandingPage({ onGetStarted }) {
             </li>
           ))}
         </ul>
+        {/* Mobile nav drawer */}
+        <div className={`mobile-nav-drawer${mobileNavOpen ? ' open' : ''}`}>
+          <button className="close-drawer-btn" onClick={() => setMobileNavOpen(false)} aria-label="Close navigation">×</button>
+          <ul>
+            {NAV_ITEMS.map((item, idx) => (
+              <li key={item.id}>
+                <button onClick={() => { setMessageIdx(idx); setMobileNavOpen(false); }}>{item.label}</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Overlay for mobile nav */}
+        {mobileNavOpen && <div className="mobile-nav-overlay"></div>}
       </nav>
       <div className="landing-hero">
         <h1>
