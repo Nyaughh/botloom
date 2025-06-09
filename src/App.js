@@ -38,7 +38,7 @@ function LandingPage({ onGetStarted, getStartedClicked }) {
         navItems={NAV_ITEMS}
         onNavClick={() => {}}
         getStartedClicked={getStartedClicked}
-        brand={<><img src={process.env.PUBLIC_URL + '/zenthrix-logo.png'} alt="Botloom Logo" className="main-logo" /><span className="brand-name">BOTLOOM</span></>}
+        brand={<><img src="/zenthrix-logo.png" alt="Botloom Logo" className="main-logo" /><span className="brand-name">BOTLOOM</span></>}
       />
       <div className="landing-hero landing-hero-centered">
         <h1>
@@ -73,11 +73,11 @@ function App() {
         navItems={NAV_ITEMS}
         onNavClick={scrollToSection}
         getStartedClicked={getStartedClicked}
-        brand={<><img src={process.env.PUBLIC_URL + '/zenthrix-logo.png'} alt="Botloom Logo" className="main-logo" /><span className="brand-name">BOTLOOM</span></>}
+        brand={<><img src="/zenthrix-logo.png" alt="Botloom Logo" className="main-logo" /><span className="brand-name">BOTLOOM</span></>}
         onBrandClick={scrollToTop}
       />
       <header className="hero-section">
-        <img src={process.env.PUBLIC_URL + '/zenthrix-logo.png'} alt="Botloom Logo" className="hero-logo" />
+        <img src="/zenthrix-logo.png" alt="Botloom Logo" className="hero-logo" />
         <h1>BOTLOOM</h1>
         <p className="tagline">INNOVATIVE TECHNOLOGY SOLUTIONS</p>
       </header>
