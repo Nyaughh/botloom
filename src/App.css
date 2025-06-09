@@ -272,16 +272,16 @@ a {
     animation: fadeIn 1.2s ease 0.5s forwards;
   }
   .landing-bg {
-    padding-top: 120px; /* Add extra space for mobile navbar */
-  }
-  .landing-hero {
-    padding-top: 40px; /* Add extra space for mobile navbar */
+    padding-top: 0 !important;
   }
   .App {
-    padding-top: 60px; /* reduced from 80px */
+    padding-top: 0 !important;
   }
   .hero-section {
-    padding-top: 60px; /* reduced from 80px */
+    padding-top: 0 !important;
+  }
+  .landing-hero {
+    padding-top: 0 !important;
   }
 }
 
@@ -529,10 +529,17 @@ a {
 
 /* Center landing hero content vertically */
 .landing-hero-centered {
-  min-height: calc(100vh - 120px); /* safer value for vertical centering */
+  min-height: 60vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* margin-top: -40px;  removed to prevent content from being pushed out of view */
+}
+
+.landing-hero {
+  min-height: unset;
+}
+
+.hero-section {
+  min-height: unset;
 }
