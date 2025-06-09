@@ -271,6 +271,12 @@ a {
   .solution-card {
     animation: fadeIn 1.2s ease 0.5s forwards;
   }
+  .landing-bg {
+    padding-top: 120px; /* Add extra space for mobile navbar */
+  }
+  .landing-hero {
+    padding-top: 40px; /* Add extra space for mobile navbar */
+  }
 }
 
 @media (max-width: 480px) {
