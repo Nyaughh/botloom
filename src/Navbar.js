@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import './App.css';
+import React, { useState, useEffect } from 'react';
 
 export default function Navbar({ navItems, onNavClick, getStartedClicked, brand, onBrandClick }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
