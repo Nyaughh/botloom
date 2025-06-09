@@ -1,5 +1,6 @@
 import './App.css';
 import React, { useRef, useEffect, useState } from 'react';
+import Navbar from './Navbar';
 
 const NAV_ITEMS = [
   { label: 'About', id: 'about' },
@@ -30,64 +31,16 @@ function scrollToSection(id) {
   }
 }
 
-function LandingPage({ onGetStarted }) {
-  const [messageIdx, setMessageIdx] = useState(null);
-  const [logoMsg, setLogoMsg] = useState(false);
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-
-  // Close drawer when clicking outside
-  React.useEffect(() => {
-    if (!mobileNavOpen) return;
-    function handleClick(e) {
-      if (e.target.closest('.mobile-nav-drawer') || e.target.closest('.hamburger-btn')) return;
-      setMobileNavOpen(false);
-    }
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, [mobileNavOpen]);
-
+function LandingPage({ onGetStarted, getStartedClicked }) {
   return (
     <div className="landing-bg">
-      <nav className="navbar">
-        <div className="navbar-logo" onClick={() => setLogoMsg(true)} style={{ cursor: 'pointer', position: 'relative' }}>
-          <img src={process.env.PUBLIC_URL + '/zenthrix-logo.png'} alt="Botloom Logo" className="main-logo" />
-          <span className="brand-name">BOTLOOM</span>
-          {logoMsg && (
-            <div className="landing-nav-msg" style={{ left: '50%', top: '110%', transform: 'translateX(-50%)' }}>
-              Click on Get Started to use this feature.
-            </div>
-          )}
-        </div>
-        {/* Hamburger button for mobile */}
-        <button className="hamburger-btn" onClick={() => setMobileNavOpen(v => !v)} aria-label="Open navigation">
-          <span></span><span></span><span></span>
-        </button>
-        {/* Desktop nav */}
-        <ul className="navbar-links">
-          {NAV_ITEMS.map((item, idx) => (
-            <li key={item.id} style={{ position: 'relative' }}>
-              <button onClick={() => setMessageIdx(idx)}>{item.label}</button>
-              {messageIdx === idx && (
-                <div className="landing-nav-msg">Click on Get Started to use this feature.</div>
-              )}
-            </li>
-          ))}
-        </ul>
-        {/* Mobile nav drawer */}
-        <div className={`mobile-nav-drawer${mobileNavOpen ? ' open' : ''}`}>
-          <button className="close-drawer-btn" onClick={() => setMobileNavOpen(false)} aria-label="Close navigation">×</button>
-          <ul>
-            {NAV_ITEMS.map((item, idx) => (
-              <li key={item.id}>
-                <button onClick={() => { setMessageIdx(idx); setMobileNavOpen(false); }}>{item.label}</button>
-              </li>
-            ))}
-          </ul>
-        </div>
-        {/* Overlay for mobile nav */}
-        {mobileNavOpen && <div className="mobile-nav-overlay"></div>}
-      </nav>
-      <div className="landing-hero">
+      <Navbar
+        navItems={NAV_ITEMS}
+        onNavClick={() => {}}
+        getStartedClicked={getStartedClicked}
+        brand={<><img src={process.env.PUBLIC_URL + '/zenthrix-logo.png'} alt="Botloom Logo" className="main-logo" /><span className="brand-name">BOTLOOM</span></>}
+      />
+      <div className="landing-hero landing-hero-centered">
         <h1>
           <span className="gradient-text">AI-Powered Services</span><br />
           for Modern Businesses
@@ -107,6 +60,7 @@ function App() {
   const [showNavbar, setShowNavbar] = useState(true);
   const lastScrollY = useRef(window.scrollY);
   const [showMain, setShowMain] = useState(false);
+  const [getStartedClicked, setGetStartedClicked] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -126,24 +80,18 @@ function App() {
   };
 
   if (!showMain) {
-    return <LandingPage onGetStarted={() => setShowMain(true)} />;
+    return <LandingPage onGetStarted={() => { setShowMain(true); setGetStartedClicked(true); }} getStartedClicked={getStartedClicked} />;
   }
 
   return (
     <div className="App">
-      <nav className="navbar" ref={navbarRef} style={{ top: showNavbar ? 0 : '-100px', transition: 'top 0.3s' }}>
-        <div className="navbar-logo" onClick={scrollToTop} style={{ cursor: 'pointer' }}>
-          <img src={process.env.PUBLIC_URL + '/zenthrix-logo.png'} alt="Botloom Logo" className="main-logo" />
-          <span className="brand-name">BOTLOOM</span>
-        </div>
-        <ul className="navbar-links">
-          {NAV_ITEMS.map(item => (
-            <li key={item.id}>
-              <button onClick={() => scrollToSection(item.id)}>{item.label}</button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <Navbar
+        navItems={NAV_ITEMS}
+        onNavClick={scrollToSection}
+        getStartedClicked={getStartedClicked}
+        brand={<><img src={process.env.PUBLIC_URL + '/zenthrix-logo.png'} alt="Botloom Logo" className="main-logo" /><span className="brand-name">BOTLOOM</span></>}
+        onBrandClick={scrollToTop}
+      />
       <header className="hero-section">
         <img src={process.env.PUBLIC_URL + '/zenthrix-logo.png'} alt="Botloom Logo" className="hero-logo" />
         <h1>BOTLOOM</h1>
