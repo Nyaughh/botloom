@@ -275,10 +275,10 @@ a {
     padding-top: 0 !important;
   }
   .App {
-    padding-top: 0 !important;
+    padding-top: 80px;
   }
   .hero-section {
-    padding-top: 0 !important;
+    padding-top: 80px;
   }
   .landing-hero {
     padding-top: 0 !important;
@@ -529,11 +529,12 @@ a {
 
 /* Center landing hero content vertically */
 .landing-hero-centered {
-  min-height: 60vh;
+  min-height: calc(100vh - 180px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: -40px;
 }
 
 .landing-hero {
